@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Controllers;
+
+class Home extends BaseController
+{
+    public function index(): string
+    {
+        return view('home');
+    }
+
+    public function accomodation(): string
+    {
+        return view('accomodation');
+    }
+
+    public function register(): string
+    {
+        return view('register');
+    }
+
+    public function login(): string
+    {
+        return view('login');
+    }
+}
