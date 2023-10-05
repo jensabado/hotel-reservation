@@ -2,7 +2,7 @@
 use App\Libraries\CIAuth;
 ?>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,16 +12,16 @@ use App\Libraries\CIAuth;
   <!-- <link rel="icon" href="user/image/favicon.png" type="user/image/png"> -->
   <title><?= isset($page_title) ? $page_title : 'EasyStay Reservations' ?></title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="user/css/bootstrap.css">
-  <link rel="stylesheet" href="user/vendors/linericon/style.css">
-  <link rel="stylesheet" href="user/css/font-awesome.min.css">
-  <link rel="stylesheet" href="user/vendors/owl-carousel/owl.carousel.min.css">
-  <link rel="stylesheet" href="user/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-  <link rel="stylesheet" href="user/vendors/nice-select/css/nice-select.css">
-  <link rel="stylesheet" href="user/vendors/owl-carousel/owl.carousel.min.css">
+  <link rel="stylesheet" href="<?= base_url('user/css/bootstrap.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('user/vendors/linericon/style.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('user/css/font-awesome.min.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('user/vendors/owl-carousel/owl.carousel.min.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('user/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('user/vendors/nice-select/css/nice-select.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('user/vendors/owl-carousel/owl.carousel.min.css') ?>">
   <!-- main css -->
-  <link rel="stylesheet" href="user/css/style.css">
-  <link rel="stylesheet" href="user/css/responsive.css">
+  <link rel="stylesheet" href="<?= base_url('user/css/style.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('user/css/responsive.css') ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 </head>
 
@@ -43,7 +43,7 @@ use App\Libraries\CIAuth;
             <span class="icon-bar"></span>
           </button>
           <?php if(CIAuth::check()) { ?>
-          <div class="custom-dropdown d-flex d-lg-none ">
+          <div class="custom-dropdown d-flex d-lg-none">
             <i class="fa-solid fa-user ml-md-3 mb-3 mb-lg-0 dropdown-button" id="dropdown-button"></i>
             <ul class="dropdown-list">
               <li><i class="fa-solid fa-user"></i>Profile</li>
@@ -52,6 +52,8 @@ use App\Libraries\CIAuth;
                   class="fa-solid fa-right-from-bracket"></i>Logout</li>
             </ul>
           </div>
+          <?php } else { ?>
+            <a href="login" class="btn theme_btn button_hover ml-md-3 mb-3 mb-lg-0 d-flex d-lg-none" style="margin-top: 10px;">Login</a>
           <?php } ?>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -83,7 +85,7 @@ use App\Libraries\CIAuth;
             </ul>
           </div>
           <?php } else {; ?>
-          <a href="login" class="btn theme_btn button_hover ml-md-3 mb-3 mb-lg-0">Login</a>
+          <a href="login" class="btn theme_btn button_hover ml-md-3 mb-3 mb-lg-0 d-none d-lg-flex">Login</a>
           <?php } ?>
         </div>
       </nav>
@@ -97,17 +99,16 @@ use App\Libraries\CIAuth;
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="user/js/popper.js"></script>
-  <script src="user/js/bootstrap.min.js"></script>
-  <script src="user/vendors/owl-carousel/owl.carousel.min.js"></script>
-  <script src="user/js/jquery.ajaxchimp.min.js"></script>
-  <script src="user/js/mail-script.js"></script>
-  <script src="user/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-  <script src="user/vendors/nice-select/user/js/jquery.nice-select.js"></script>
-  <script src="user/js/mail-script.js"></script>
-  <script src="user/js/stellar.js"></script>
-  <script src="user/vendors/lightbox/simpleLightbox.min.js"></script>
-  <script src="user/js/custom.js"></script>
+  <script src="<?= base_url('user/js/popper.js') ?>"></script>
+  <script src="<?= base_url('user/js/bootstrap.min.js') ?>"></script>
+  <script src="<?= base_url('user/vendors/owl-carousel/owl.carousel.min.js') ?>"></script>
+  <script src="<?= base_url('user/js/jquery.ajaxchimp.min.js') ?>"></script>
+  <script src="<?= base_url('user/js/mail-script.js') ?>"></script>
+  <script src="<?= base_url('user/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js') ?>"></script>
+  <script src="<?= base_url('user/vendors/nice-select/user/js/jquery.nice-select.js') ?>"></script>
+  <script src="<?= base_url('user/js/stellar.js') ?>"></script>
+  <script src="<?= base_url('user/vendors/lightbox/simpleLightbox.min.js') ?>"></script>
+  <script src="<?= base_url('user/js/custom.js') ?>"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
