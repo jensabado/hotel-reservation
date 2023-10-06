@@ -2,16 +2,22 @@
 
 namespace App\Controllers;
 
+use App\Models\Room;
+
 class Home extends BaseController
 {
     public function index(): string
     {
-        return view('home');
+        $room = new Room();
+        $data = ['page_title' => 'Homepage', 'room_data' => $room->getDataForHomepage()];
+        return view('home', $data);
     }
 
     public function accomodation(): string
     {
-        return view('accomodation');
+        $room = new Room();
+        $data = ['page_title' => 'Accomodation', 'room_data' => $room->getDataForAccomodation()];
+        return view('accomodation', $data);
     }
 
     public function register(): string

@@ -11,6 +11,12 @@ use Carbon\Carbon;
 class Authentication extends BaseController
 {
 
+    public function validatePassword(string $password): bool
+    {
+        $pattern = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&#]{8,}$/';
+        return (bool) preg_match($pattern, $password);
+    }
+
     public function index(): string
     {
         $data = ['page_title' => 'Login'];
@@ -256,14 +262,14 @@ class Authentication extends BaseController
         }
 
         $validation = \Config\Services::validation();
-
         $validation->setRules([
-            'new_password' => 'required|min_length[8]',
+            'new_password' => 'required|min_length[8]|strong_password[new_password]',
             'confirm_password' => 'required|matches[new_password]',
         ], [
             'new_password' => [
                 'required' => 'New Password is required',
-                'min_length' => 'New Password must be atleast 8 characters long.',
+                'min_length' => 'New Password must be at least 8 characters long.',
+                'strong_password' => 'New Password must contains atleast 1 uppercase, 1 lowercase, 1 number, and 1 special character.',
             ],
             'confirm_password' => [
                 'required' => 'Confirm Password is required.',
@@ -272,39 +278,92 @@ class Authentication extends BaseController
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $validation->getErrors()]);
+        }
+
+        $token = $this->request->getPost('token');
+        $password_reset_token = new PasswordResetToken();
+        $get_token = $password_reset_token->asObject()->where('token', $token)->first();
+
+        $account = new Account();
+        $user = $account->asObject()
+            ->where('email', $get_token->email)
+            ->where('type', 'user')
+            ->where('is_deleted', 0)
+            ->first();
+
+        if (!$get_token) {
+            $data_to_pass = 'Invalid token. Request another reset password link.';
+            session()->setFlashdata('message', $data_to_pass);
+            return redirect()->route('user.forgot-password.form');
+        }
+
+        $account->where('email', $user->email)
+            ->where('type', 'user')
+            ->where('is_deleted', 0)
+            ->set('password', Hash::hash($this->request->getPost('new_password')))
+            ->update();
+
+        if ($account) {
+            $password_reset_token->where('token', $token)->delete();
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Password updated successfully. You can now login.']);
+        }
+    }
+
+    public function admin_login()
+    {
+        $data = ['page_title' => 'Admin Login'];
+        return view('admin/login', $data);
+    }
+
+    public function admin_login_submit()
+    {
+        if (!$this->request->isAJAX()) {
+            return;
+        }
+
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'login_id' => 'required',
+            'password' => 'required|min_length[8]',
+        ], [
+            'login_id' => [
+                'required' => 'Username or Email is required.',
+            ],
+            'password' => [
+                'required' => 'Password is required.',
+                'min_length' => 'Password must be at least 8 characters long.',
+            ],
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
             $result = ['status' => 'error', 'message' => $validation->getErrors()];
         } else {
-            $token = $this->request->getPost('token');
-            $password_reset_token = new PasswordResetToken();
-            $get_token = $password_reset_token->asObject()->where('token', $token)->first();
-
+            $login_id = $this->request->getPost('login_id');
+            $password = $this->request->getPost('password');
             $account = new Account();
-            $user = $account->asObject()->where('email', $get_token->email)
-                ->where('type', 'user')
+
+            $field = filter_var($login_id, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+            $admin = $account->asObject()->where($field, $login_id)
+                ->where('type', 'admin')
                 ->where('is_deleted', 0)
                 ->first();
 
-            if (!$get_token) {
-                $data_to_pass = 'Invalid token. Request another reset password link.';
-
-                session()->setFlashdata('message', $data_to_pass);
-
-                return redirect()->route('user.forgot-password.form');
+            if ($admin && Hash::check($password, $admin->password)) {
+                CIAuth::setCIAuthAdmin($admin);
+                $result = ['status' => 'success'];
             } else {
-
-                $account->where('email', $user->email)
-                    ->where('type', 'user')
-                    ->where('is_deleted', 0)
-                    ->set('password', Hash::hash($this->request->getPost('new_password')))
-                    ->update();
-
-                if ($account) {
-                    $password_reset_token->where('token', $token)->delete();
-                    $result = ['status' => 'success', 'message' => 'Password updated successfully. You can now login.'];
-                }
+                $result = ['status' => 'error', 'message' => ['login_id' => 'Invalid credentials.']];
             }
         }
 
         return $this->response->setJSON($result);
+    }
+
+    public function admin_logout()
+    {
+        CIAuth::forgetAdmin();
+        return redirect()->route('admin.login.form');
     }
 }

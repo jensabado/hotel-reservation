@@ -24,55 +24,21 @@
             <h2 class="title_color">Hotel Accomodation</h2>
             <p>We all live in an age that belongs to the young at heart. Life that is becoming extremely fast, </p>
         </div>
-        <div class="row mb_30">
+        <div class="row mb_30 justify-content-center">
+            <?php foreach($room_data as $room) : ?>
             <div class="col-lg-3 col-sm-6">
                 <div class="accomodation_item text-center">
                     <div class="hotel_img">
-                        <img src="user/image/room1.jpg" alt="">
+                        <img style="height: 250px; width: 100%; object-fit: cover; object-position: center !important;" src="<?= !empty($room->photo) ? base_url('room-image/' . $room->photo) : base_url('room-image/No-Image-Placeholder.svg.png') ?>" alt="">
                         <a href="#" class="btn theme_btn button_hover">Book Now</a>
                     </div>
                     <a href="#">
-                        <h4 class="sec_h4">Double Deluxe Room</h4>
+                        <h4 class="sec_h4"><?= $room->name ?></h4>
                     </a>
-                    <h5>$250<small>/night</small></h5>
+                    <h5>P<?= $room->price ?></h5>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="accomodation_item text-center">
-                    <div class="hotel_img">
-                        <img src="user/image/room2.jpg" alt="">
-                        <a href="#" class="btn theme_btn button_hover">Book Now</a>
-                    </div>
-                    <a href="#">
-                        <h4 class="sec_h4">Single Deluxe Room</h4>
-                    </a>
-                    <h5>$200<small>/night</small></h5>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="accomodation_item text-center">
-                    <div class="hotel_img">
-                        <img src="user/image/room3.jpg" alt="">
-                        <a href="#" class="btn theme_btn button_hover">Book Now</a>
-                    </div>
-                    <a href="#">
-                        <h4 class="sec_h4">Honeymoon Suit</h4>
-                    </a>
-                    <h5>$750<small>/night</small></h5>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="accomodation_item text-center">
-                    <div class="hotel_img">
-                        <img src="user/image/room4.jpg" alt="">
-                        <a href="#" class="btn theme_btn button_hover">Book Now</a>
-                    </div>
-                    <a href="#">
-                        <h4 class="sec_h4">Economy Double</h4>
-                    </a>
-                    <h5>$200<small>/night</small></h5>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>

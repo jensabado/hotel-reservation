@@ -75,24 +75,17 @@
 <?=$this->section('script');?>
 <script defer>
 $(document).ready(function() {
-  function togglePassword(passwordInput, icon) {
-    if (passwordInput.attr('type') === 'password') {
-      passwordInput.attr('type', 'text');
-      icon.removeClass('fa-eye').addClass('fa-eye-slash');
-    } else {
-      passwordInput.attr('type', 'password');
-      icon.removeClass('fa-eye-slash').addClass('fa-eye');
-    }
+  function togglePasswordVisibility(passwordInput, icon) {
+    const inputType = passwordInput.attr('type');
+    passwordInput.attr('type', inputType === 'password' ? 'text' : 'password');
+    icon.toggleClass('fa-eye fa-eye-slash');
   }
 
-  $('#togglePassword').click(function() {
-    togglePassword($('#new_password'), $(this).find('i'));
+  $('#togglePassword, #togglePasswordConfirm').click(function() {
+    const passwordInput = $(this).siblings('input[type="password"]');
+    const icon = $(this).find('i');
+    togglePasswordVisibility(passwordInput, icon);
   });
-
-  $('#togglePasswordConfirm').click(function() {
-    togglePassword($('#confirm_password'), $(this).find('i'));
-  });
-
 
   $('#reset_password_form').on('submit', function(e) {
     e.preventDefault();
@@ -108,26 +101,29 @@ $(document).ready(function() {
       contentType: false,
       cache: false,
       success: function(response) {
-        console.log(response);
         if (response.status === 'success') {
           localStorage.setItem('message', response.message);
-          window.location.href = 'login';
+          window.location.href = '<?= route_to('user.login.form') ?>';
         } else if (response.status === 'error') {
-          $('.errors').text('');
-          $('.reset_password_form_field').removeClass('border-danger');
-          let error_messages = response.message;
-
-          $.each(error_messages, function(field, error_message) {
-            $('#' + field + '_error').text(error_message);
-            $('#' + field).addClass('border-danger');
-          });
+          handleValidationErrors(response.message);
         }
       },
       error: function(xhr, status, error) {
         console.error(xhr.responseText);
       }
-    })
-  })
-})
+    });
+  });
+
+  function handleValidationErrors(errorMessages) {
+    $('.errors').text('');
+    $('.reset_password_form_field').removeClass('border-danger');
+
+    $.each(errorMessages, function(field, error_message) {
+      $('#' + field + '_error').text(error_message);
+      $('#' + field).addClass('border-danger');
+    });
+  }
+});
 </script>
+
 <?=$this->endSection();?>

@@ -8,6 +8,7 @@ use CodeIgniter\Validation\StrictRules\FileRules;
 use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
 use App\Validation\IsPasswordStrong;
+use App\Validation\IsPrice;
 
 class Validation extends BaseConfig
 {
@@ -27,7 +28,9 @@ class Validation extends BaseConfig
         FileRules::class,
         CreditCardRules::class,
         IsPasswordStrong::class,
+        IsPrice::class,
     ];
+
 
     /**
      * Specifies the views that are used to display the
@@ -36,7 +39,7 @@ class Validation extends BaseConfig
      * @var array<string, string>
      */
     public array $templates = [
-        'list'   => 'CodeIgniter\Validation\Views\list',
+        'list' => 'CodeIgniter\Validation\Views\list',
         'single' => 'CodeIgniter\Validation\Views\single',
     ];
 
