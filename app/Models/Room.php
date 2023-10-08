@@ -40,27 +40,26 @@ class Room extends Model
 
     public function getDataForHomepage()
     {
-        $query = $this->db->table('rooms')
-            ->select('rooms.id, room_types.name, rooms.room_no, rooms.photo, rooms.price')
+        $query = $this->select('rooms.id, room_types.name, rooms.room_no, rooms.photo, rooms.price')
             ->join('room_types', 'rooms.room_type = room_types.id', 'left')
             ->where('rooms.is_deleted', 0)
             ->groupBy('rooms.room_type')
-            ->orderBy('rooms.id', 'desc')
+            ->orderBy('rooms.price', 'asc')
             ->limit(4);
 
         $results = $query->get()->getResult();
 
         return $results;
+
     }
 
     public function getDataForAccomodation()
     {
-        $query = $this->db->table('rooms')
-            ->select('rooms.id, room_types.name, rooms.room_no, rooms.photo, rooms.price')
+        $query = $this->select('rooms.id, room_types.name, rooms.room_no, rooms.photo, rooms.price')
             ->join('room_types', 'rooms.room_type = room_types.id', 'left')
             ->where('rooms.is_deleted', 0)
             ->groupBy('rooms.room_type')
-            ->orderBy('rooms.id', 'desc');
+            ->orderBy('rooms.price', 'asc');
 
         $results = $query->get()->getResult();
 

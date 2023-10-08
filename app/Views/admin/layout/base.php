@@ -26,7 +26,7 @@ $admin = CIAuth::admin();
   <link rel="stylesheet" href="<?= base_url('admin/css/vertical-layout-light/style.css') ?>">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <!-- endinject -->
-  <link rel="shortcut icon" href="images/favicon.png" />
+  <!-- <link rel="shortcut icon" href="images/favicon.png" /> -->
 </head>
 
 <body>
@@ -86,7 +86,13 @@ $admin = CIAuth::admin();
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item nav-category">Rooms</li>
+          <li class="nav-item nav-category">Room</li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= route_to('admin.room_types') ?>">
+              <i class="mdi mdi-room-service menu-icon"></i>
+              <span class="menu-title">Room Types</span>
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="<?= route_to('admin.room') ?>">
               <i class="mdi mdi-room-service-outline menu-icon"></i>

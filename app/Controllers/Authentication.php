@@ -39,7 +39,7 @@ class Authentication extends BaseController
         $validation->setRules([
             'username' => 'required',
             'email' => 'required|valid_email',
-            'password' => 'required|min_length[8]|is_password_strong[password]',
+            'password' => 'required|min_length[8]|strong_password[password]',
         ], [
             'username' => ['required' => 'Username is required.'],
             'email' => [
@@ -49,7 +49,7 @@ class Authentication extends BaseController
             'password' => [
                 'required' => 'Password is required.',
                 'min_length' => 'Password must be at least 8 characters long.',
-                'is_password_strong' => 'Password must contains atleast 1 uppercase, 1 lowercase, 1 number and 1 special character',
+                'strong_password' => 'Password must contains atleast 1 uppercase, 1 lowercase, 1 number and 1 special character',
             ],
         ]);
 

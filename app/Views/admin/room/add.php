@@ -36,14 +36,6 @@
                   <span class="text-danger errors" style="font-size: 13px" id="add_room_price_error"></span>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="">Room Image</label>
-                  <input type="file" name="add_room_image" id="add_room_image" class="form-control add_form_field"
-                    placeholder="Enter Room Price" accept="image/*">
-                  <span class="text-danger errors" style="font-size: 13px" id="add_room_image_error"></span>
-                </div>
-              </div>
               <div class="col-12">
                 <div class="form-group">
                   <button class="btn btn-primary" type="submit">Submit</button>

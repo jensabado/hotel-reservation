@@ -29,16 +29,19 @@
             <div class="col-lg-3 col-sm-6">
                 <div class="accomodation_item text-center">
                     <div class="hotel_img">
-                        <img style="height: 250px; width: 100%; object-fit: cover; object-position: center !important;" src="<?= !empty($room->photo) ? base_url('room-image/' . $room->photo) : base_url('room-image/No-Image-Placeholder.svg.png') ?>" alt="">
-                        <a href="#" class="btn theme_btn button_hover">Book Now</a>
+                        <img style="height: 250px; width: 100%; object-fit: cover; object-position: center !important;" src="<?= !empty($room['thumbnail']) ? base_url('room-type-image/' . $room['thumbnail']) : base_url('room-type-image/No-Image-Placeholder.svg.png') ?>" alt="">
+                        <a href="/book-now/<?= $room['id'] ?>" class="btn theme_btn button_hover">Book Now</a>
                     </div>
-                    <a href="#">
-                        <h4 class="sec_h4"><?= $room->name ?></h4>
+                    <a href="/book-now/<?= $room['id'] ?>">
+                        <h4 class="sec_h4"><?= $room['name']  ?></h4>
                     </a>
-                    <h5>P<?= $room->price ?></h5>
+                    <h5>P<?= $room['price'] ?></h5>
                 </div>
             </div>
             <?php endforeach; ?>
+        </div>
+        <div class="row align-items-center justify-content-center mt-4">
+            <a href="/accomodation" class="btn theme_btn button_hover">View More</a>
         </div>
     </div>
 </section>

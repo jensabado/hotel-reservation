@@ -1,19 +1,20 @@
-<?php $this->extend('admin/layout/base') ?>
+<?php $this->extend('admin/layout/base')?>
 
-<?php $this->section('content') ?>
+<?php $this->section('content')?>
 <div class="content-wrapper">
   <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <a href="<?= route_to('admin.add.room') ?>" class="btn btn-primary">ADD ROOM</a>
+          <a href="<?=route_to('admin.add.room_type')?>" class="btn btn-primary">ADD ROOM TYPE</a>
           <div class="table-responsive mt-3">
             <table class="table table-hover" id="table">
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>Thumbnail</th>
                   <th>Room Type</th>
-                  <th>Room No</th>
+                  <th>Price</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -25,9 +26,9 @@
   </div>
 </div>
 <!-- content-wrapper ends -->
-<?php $this->endSection(); ?>
+<?php $this->endSection();?>
 
-<?= $this->section('script') ?>
+<?=$this->section('script')?>
 <script>
 $(window).on('load', function() {
   if (localStorage.getItem('message')) {
@@ -57,7 +58,7 @@ $(document).ready(function() {
     "scrollX": true,
     "sScrollXInner": "100%",
     "ajax": {
-      url: "<?= route_to('admin.room.datatable') ?>",
+      url: "<?=route_to('admin.room-types.datatable')?>",
       type: "POST",
       error: function(xhr, error, code) {
         console.log(xhr, code);
@@ -96,7 +97,7 @@ $(document).ready(function() {
 
         $.ajax({
           type: "POST",
-          url: "<?= route_to('admin.delete.room.submit') ?>",
+          url: "<?=route_to('admin.delete.room_type.submit')?>",
           data: form,
           processData: false,
           contentType: false,
@@ -155,4 +156,4 @@ $(document).ready(function() {
   })
 })
 </script>
-<?= $this->endSection(); ?>
+<?=$this->endSection();?>
