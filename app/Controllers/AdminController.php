@@ -467,4 +467,83 @@ class AdminController extends BaseController
         return $this->response->setJSON($result);
     }
 
+    public function pending_reservation()
+    {
+        $data = ['page_title' => 'Pending Reservation | ES Admin', 'header' => 'Pending Reservation'];
+
+        return view('admin/reservation/pending', $data);
+    }
+
+    public function pending_reservation_datatable()
+    {
+        $request = service('request');
+        $draw = intval($request->getPost('draw'));
+        $start = intval($request->getPost('start'));
+        $length = intval($request->getPost('length'));
+        $searchValue = $request->getPost('search')['value'];
+        $order = $request->getPost('order')[0];
+        $orderColumnIndex = intval($order['column']);
+        $columnNames = ['id', 'firstname', 'email', 'contact', 'room_type', 'created_at', 'reserved_date', 'bill'];
+        $orderColumnName = $columnNames[$orderColumnIndex] ?? $columnNames[0]; // Use a default column if index is out of bounds
+        $orderDir = $order['dir'];
+
+        $builder = $this->db->table('reservation')
+            ->select('id, firstname, middlename, lastname, contact, email, room_type, created_at, reserved_date, bill')
+            ->where('is_deleted', 0)
+            ->where('status', 'pending');
+
+        if (!empty($searchValue)) {
+            $builder->groupStart()
+                ->like('firstname', '%' . $searchValue . '%')
+                ->orLike('middlename', '%' . $searchValue . '%')
+                ->orLike('lastname', '%' . $searchValue . '%')
+                ->orLike('email', '%' . $searchValue . '%')
+                ->orLike('contact', '%' . $searchValue . '%')
+                ->orLike('room_type', '%' . $searchValue . '%')
+                ->orLike('created_at', '%' . $searchValue . '%')
+                ->orLike('reserved_date', '%' . $searchValue . '%')
+                ->orLike('bill', '%' . $searchValue . '%')
+                ->groupEnd();
+        }
+
+        $totalRecords = $builder->countAllResults(false);
+
+        $builder->orderBy($orderColumnName, $orderDir);
+
+        if ($length != -1) {
+            $builder->limit($length, $start);
+        }
+
+        $rows = $builder->get()->getResultArray();
+
+        $data = [];
+
+        $count = ($start / $length) * $length + 1;
+
+        foreach ($rows as $row) {
+            $subArray = [];
+            $subArray[] = $count++;
+            $subArray[] = ucwords($row['firstname'] . ' ' . $row['middlename'] . ' ' . $row['lastname']);
+            $subArray[] = $row['email'];
+            $subArray[] = $row['contact'];
+            $subArray[] = $row['room_type'];
+            $subArray[] = $row['created_at'];
+            $subArray[] = $row['reserved_date'];
+            $subArray[] = $row['bill'];
+            $subArray[] = '<div class="btn-group" role="group">
+            <a href="room/edit/' . $row['id'] . '" class="btn btn-success py-2 px-3">EDIT</a>
+            <button class="btn btn-danger py-2 px-3" id="get_delete" data-id="' . $row['id'] . '">DELETE</button>
+          </div>';
+            $data[] = $subArray;
+        }
+
+        $output = [
+            'draw' => $draw,
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $data,
+        ];
+
+        return $this->response->setJSON($output);
+    }
 }

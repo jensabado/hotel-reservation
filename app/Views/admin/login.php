@@ -1,3 +1,7 @@
+<?php
+$session = session();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -109,7 +113,7 @@
         cache: false,
         success: function(response) {
           if (response.status === 'success') {
-            window.location.href = '<?= route_to('admin.home') ?>';
+            window.location.href = '<?= $session->get('admin_redirect_url') ?: '/home' ?>';
           } else if (response.status === 'error') {
             handleValidationErrors(response.message);
           }

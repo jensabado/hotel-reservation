@@ -23,6 +23,7 @@ $routes->group('', ['filter' => 'user_filter:guest_user'], static function ($rou
 $routes->group('', ['filter' => 'user_filter:auth_user'], static function ($routes) {
     $routes->get('logout', 'Authentication::logout', ['as' => 'user_logout']);
     $routes->get('book-now/(:any)', 'Home::book_now/$1', ['as' => 'user.book']);
+    $routes->post('book-now', 'Home::book_submit', ['as' => 'user.book.submit']);
 });
 
 // ADMIN SIDE
@@ -50,4 +51,6 @@ $routes->group('', ['filter' => 'admin_filter:auth_admin'], static function ($ro
     $routes->get('admin/room-types/edit/(:any)', 'AdminController::edit_room_type/$1', ['as' => 'admin.edit.room_type']);
     $routes->post('admin/room-types/edit', 'AdminController::edit_room_type_submit', ['as' => 'admin.edit.room_type.submit']);
     $routes->post('admin/room-types', 'AdminController::delete_room_type_submit', ['as' => 'admin.delete.room_type.submit']);
+    $routes->get('admin/reservation/pending', 'AdminController::pending_reservation', ['as' => 'admin.pending_reservation']);
+    $routes->post('admin/reservation/pending', 'AdminController::pending_reservation_datatable', ['as' => 'admin.pending_reservation_datatable']);
 });

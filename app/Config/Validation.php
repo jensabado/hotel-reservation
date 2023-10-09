@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Validation\IsContactNum;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
@@ -9,6 +10,7 @@ use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
 use App\Validation\IsPasswordStrong;
 use App\Validation\IsPrice;
+use App\Validation\ReservedDateValidation;
 
 class Validation extends BaseConfig
 {
@@ -29,6 +31,8 @@ class Validation extends BaseConfig
         CreditCardRules::class,
         IsPasswordStrong::class,
         IsPrice::class,
+        IsContactNum::class,
+        ReservedDateValidation::class,
     ];
 
 

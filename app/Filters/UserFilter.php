@@ -34,6 +34,8 @@ class UserFilter implements FilterInterface
 
         if($arguments[0] == 'auth_user') {
             if(!CIAuth::check()) {
+                $session = session();
+                $session->set('redirect_url', current_url());
                 return redirect()->route('user.login.form');
             }
         }

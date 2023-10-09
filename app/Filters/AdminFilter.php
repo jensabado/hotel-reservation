@@ -36,6 +36,8 @@ class AdminFilter implements FilterInterface
         if($arguments[0] == 'auth_admin')
         {
             if(!CIAuth::check_admin()) {
+                $session = session();
+                $session->set('admin_redirect_url', current_url());
                 return redirect()->route('admin.login.form');
             }
         }

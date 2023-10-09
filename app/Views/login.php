@@ -2,6 +2,8 @@
 
 <?=$this->section('content')?>
 
+<?php $session = session(); ?>
+
 <style>
 .custom_accommodation_container {
   margin-top: 70px;
@@ -82,8 +84,12 @@
 <?=$this->section('script');?>
 <script defer>
 $(window).on('load', function() {
-  if (sessionAndLocalStorageSuccessAlert()) {
-    showSuccessAlert(sessionAndLocalStorageSuccessAlert());
+  if(localStorage.getItem('message')) {
+    showAlert(localStorage.getItem('icon'), localStorage.getItem('title'), localStorage.getItem('message'));
+
+    localStorage.removeItem('icon');
+    localStorage.removeItem('title');
+    localStorage.removeItem('message');
   }
 });
 
@@ -105,7 +111,7 @@ $(document).ready(function() {
       cache: false,
       success: function(response) {
         if (response.status === 'success') {
-          window.location.href = '/';
+          window.location.href = '<?= $session->get('redirect_url') ?: '/' ?>';
         } else if (response.status === 'error') {
           handleValidationErrors(response.message);
         }
@@ -115,16 +121,6 @@ $(document).ready(function() {
       }
     });
   });
-
-  function sessionAndLocalStorageSuccessAlert() {
-    if (session('success')) {
-      return session('message');
-    } else if (localStorage.getItem('message')) {
-      const message = localStorage.getItem('message');
-      localStorage.removeItem('message');
-      return message;
-    }
-  }
 
   function togglePasswordVisibility(passwordInput) {
     const icon = $('#togglePassword i');
@@ -147,21 +143,6 @@ $(document).ready(function() {
     });
   }
 });
-
-function showSuccessAlert(message) {
-  Swal.fire({
-    icon: 'success',
-    title: 'Success!',
-    text: message,
-    iconColor: '#f8b600',
-    confirmButtonColor: '#f8b600',
-    showConfirmButton: false,
-    timer: 5000,
-    timerProgressBar: true,
-    color: '#000',
-    background: '#fff',
-  });
-}
 </script>
 
 <?=$this->endSection();?>

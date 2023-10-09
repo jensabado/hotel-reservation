@@ -25,7 +25,10 @@ use App\Libraries\CIAuth;
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 </head>
 
-<body>
+<body class="loading">
+  <div class="preloader-container">
+    <img src="<?= base_url('user/image/Rolling-1s-200px.svg') ?>" alt="">
+  </div>
   <!--================Header Area =================-->
   <header class="header_area">
     <div class="container">
@@ -53,7 +56,8 @@ use App\Libraries\CIAuth;
             </ul>
           </div>
           <?php } else { ?>
-            <a href="login" class="btn theme_btn button_hover ml-md-3 mb-3 mb-lg-0 d-flex d-lg-none" style="margin-top: 10px;">Login</a>
+          <a href="login" class="btn theme_btn button_hover ml-md-3 mb-3 mb-lg-0 d-flex d-lg-none"
+            style="margin-top: 10px;">Login</a>
           <?php } ?>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -112,6 +116,26 @@ use App\Libraries\CIAuth;
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
+  function showAlert(icon, title, message) {
+    Swal.fire({
+      icon: icon,
+      title: title,
+      text: message,
+      iconColor: '#f8b600',
+      confirmButtonColor: '#f8b600',
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+      color: '#000',
+      background: '#fff',
+    });
+  }
+
+  $(window).on('load', function() {
+    $('body').removeClass('loading');
+    $('.preloader-container').addClass('hide');
+  })
+
   $(document).ready(function() {
     // Toggle the dropdown list when a button is clicked
     $(".dropdown-button").click(function() {

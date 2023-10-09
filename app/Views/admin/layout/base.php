@@ -99,6 +99,13 @@ $admin = CIAuth::admin();
               <span class="menu-title">Room</span>
             </a>
           </li>
+          <li class="nav-item nav-category">Reservation</li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= route_to('admin.pending_reservation') ?>">
+              <i class="mdi mdi-clock-outline menu-icon"></i>
+              <span class="menu-title">Pending</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
